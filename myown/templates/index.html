@@ -1,3 +1,10 @@
 <h1>
     My name is {{ name }} and i am {{ age }} , old and i lived in {{ place }}
-</h1>
+</h1><br><br>
+
+
+<form method="" action="counter">
+    { % csrf_token %}
+    <textarea name="text" rows="25" cols="100"></textarea><br><br>
+    <input type="submit" />
+</form>
