@@ -35,10 +35,7 @@ def register(request):
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save();
-                return redirect('login')
-            
-            
-        
+                return redirect('login')            
         else:
             messages.info(request, 'Password Not The Same')
             return redirect('register')       
@@ -58,7 +55,19 @@ def login(request):
             return redirect('/')
         else:
             messages.info(request, 'Credentials Invalid')
-            return redirect
-    return render (request, 'login.html')
+            return redirect('login')
+        
+    else:
+        return render (request, 'login.html')
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
+
+def post(request, pk):
+    context = {
+        'pk': pk
+    }
+    return render(request, 'post.html', context)
     
 

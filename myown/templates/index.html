@@ -75,9 +75,15 @@
             </ul>
           </li>
           <li><a href="#contact">Contact</a></li>
+          
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>sazswew
+      </nav>
+          {% if user.is_authenticated %}
+          <button type="menu" class="btn btn-primary"><a class="getstarted  scrollto" href="logout">Logout</a></button>
+          {% else %}
+          <button type="menu" class="btn btn-primary"><a class="getstarted scrollto" href="login">Login or SignUp</a></button>
+          {% endif %}
     </div>
   </header>
 
