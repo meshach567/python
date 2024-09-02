@@ -28,3 +28,10 @@ def contact1(request):
 
 def blogdetails1(request):
     return render(request, 'blog-details.html')
+
+# def post(request, post_id):
+#     post = Post.objects.get(pk=post_id)
+#     if post is not None:
+#         return render(request, 'posts/post.html', { 'post', post})
+#     else:
+#         raise Http404('Post does not exist')

@@ -114,17 +114,17 @@
                   <article>
 
                     <div class="post-img">
-                      <img src={{post.bigimage}} alt="" class="img-fluid">
+                      <img src="{% static '{{post.bigimage}}' %}" alt="" class="img-fluid">
                     </div>
 
-                    <p class="post-category">{{post.industry}}</p>
+                    <p class="post-category">{{post.title}}</p>
 
                     <h2 class="title">
-                      <a href="{% url 'blog-details1' %}">{{post.title}}</a>
+                      <a href="{% url 'blog-details1' %}">{{post.body}}</a>
                     </h2>
 
                     <div class="d-flex align-items-center">
-                      <img src={{post.image}} alt="" class="img-fluid post-author-img flex-shrink-0">
+                      <img src="{% static '{{post.image}}' %}" alt="" class="img-fluid post-author-img flex-shrink-0">
                       <div class="post-meta">
                         <p class="post-author">{{post.name}}</p>
                         <p class="post-date">
