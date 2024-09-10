@@ -3,8 +3,6 @@ from django.shortcuts import render, redirect
 
 from django.contrib.auth.hashers import check_password
 
-from django.views import View
-
 import datetime 
 
 class Category(models.Model): 
@@ -68,7 +66,7 @@ class Products(models.Model):
 
 
 
-class Order(models.Model): 
+class Cart(models.Model): 
     product = models.ForeignKey(Products, 
                                 on_delete=models.CASCADE) 
     customer = models.ForeignKey(Customer, 
@@ -85,4 +83,4 @@ class Order(models.Model):
   
     @staticmethod
     def get_orders_by_customer(customer_id): 
-        return Order.objects.filter(customer=customer_id).order_by('-date') 
+        return Cart.objects.filter(customer=customer_id).order_by('-date') 

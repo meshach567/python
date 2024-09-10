@@ -1,62 +1,61 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect 
 from django.contrib.auth.hashers import make_password
-from .models import Category, Products, Customer,  check_password, Order
+from .models import Category, Products, Customer,  check_password, Cart
 from django.views import View 
-from .middleware import auth_middleware
 
 
 
 # Create your views here. 
 class index(View): 
-
-	def post(self, request): 
-		product = request.POST.get('product') 
-		remove = request.POST.get('remove') 
-		cart = request.session.get('cart') 
-		if cart: 
-			quantity = cart.get(product) 
-			if quantity: 
-				if remove: 
-					if quantity <= 1: 
-						cart.pop(product) 
-					else: 
-						cart[product] = quantity-1
-				else: 
-					cart[product] = quantity+1
-
-			else: 
-				cart[product] = 1
-		else: 
-			cart = {} 
-			cart[product] = 1
-
-		request.session['cart'] = cart 
-		print('cart', request.session['cart']) 
-		return redirect('homepage') 
-
-	def get(self, request): 
-		# print() 
-		return HttpResponseRedirect(f'/store{request.get_full_path()[1:]}') 
-
-
+  
+    def post(self, request): 
+        product = request.POST.get('product') 
+        remove = request.POST.get('remove') 
+        cart = request.session.get('cart') 
+        if cart: 
+            quantity = cart.get(product) 
+            if quantity: 
+                if remove: 
+                    if quantity <= 1: 
+                        cart.pop(product) 
+                    else: 
+                        cart[product] = quantity-1
+                else: 
+                    cart[product] = quantity+1
+  
+            else: 
+                cart[product] = 1
+        else: 
+            cart = {} 
+            cart[product] = 1
+  
+        request.session['cart'] = cart 
+        print('cart', request.session['cart']) 
+        return redirect('index.html') 
+  
+    def get(self, request): 
+        # print() 
+        return HttpResponseRedirect(f'/store{request.get_full_path()[1:]}') 
+  
+  
 def store(request): 
-	cart = request.session.get('cart') 
-	if not cart: 
-		request.session['cart'] = {} 
-	products = None
-	categories = Category.get_all_categories() 
-	categoryID = request.GET.get('category') 
-	if categoryID: 
-		products = Products.get_all_products_by_categoryid(categoryID) 
-	else: 
-		products = Products.get_all_products() 
-
-	data = {} 
-	data['products'] = products 
-	data['categories'] = categories 
-
-	print('you are : ', request.session.get('email')) 
-	return render(request, 'index.html', data) 
+    cart = request.session.get('cart') 
+    if not cart: 
+        request.session['cart'] = {} 
+    products = None
+    categories = Category.get_all_categories() 
+    categoryID = request.GET.get('category') 
+    if categoryID: 
+        products = Products.get_all_products_by_categoryid(categoryID) 
+    else: 
+        products = Products.get_all_products() 
+  
+    data = {} 
+    data['products'] = products 
+    data['categories'] = categories 
+  
+    print('you are : ', request.session.get('email')) 
+    return render(request, 'index.html', data) 
 
 
 class Login(View): 
@@ -80,7 +79,7 @@ class Login(View):
 					return HttpResponseRedirect(Login.return_url) 
 				else: 
 					Login.return_url = None
-					return redirect('homepage') 
+					return redirect('index.html') 
 			else: 
 				error_message = 'Invalid !!'
 		else: 
@@ -171,7 +170,7 @@ class CheckOut(View):
   
         for product in products: 
             print(cart.get(str(product.id))) 
-            order = Order(customer=Customer(id=customer), 
+            order = Cart(customer=Customer(id=customer), 
                           product=product, 
                           price=product.price, 
                           address=address, 
@@ -184,9 +183,17 @@ class CheckOut(View):
     
     
 class OrderView(View): 
-  
     def get(self, request): 
         customer = request.session.get('customer') 
-        orders = Order.get_orders_by_customer(customer) 
+        orders = Cart.get_orders_by_customer(customer) 
         print(orders) 
         return render(request, 'orders.html', {'orders': orders}) 
+    
+def contact(request):
+    return render(request, 'contact.html')
+
+def about(request):
+    return render(request, 'about.html')
+
+def services(request):
+    return render(request, 'services.html')
